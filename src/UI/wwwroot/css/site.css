@@ -56,7 +56,9 @@ a, .btn-link {
     min-width: 200px;
     max-width: 320px;
 }
-
+.card-clickable {
+    cursor: pointer;
+}
 .realtime-card {
     border-radius: 16px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -64,10 +66,11 @@ a, .btn-link {
     min-height: 120px;
     transition: transform 0.2s, box-shadow 0.2s;
 }
-.realtime-card:hover {
+.card-clickable.realtime-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(102, 126, 234, 0.35);
 }
+.realtime-card .rz-text,
 .realtime-card .temperature-value,
 .realtime-card .temperature-unit,
 .realtime-card .card-title { color: white !important; }
@@ -81,7 +84,18 @@ a, .btn-link {
 .trend-neutral { color: rgba(255,255,255,0.7) !important; font-weight: bold; line-height: 1; }
 
 .realtime-grid { padding: 0.5rem 0; }
-.mud-appbar-gradient { background: linear-gradient(90deg, #594ae2 0%, #7b6cf2 100%) !important; }
+
+/* chart X-axis rotated labels: allow SVG overflow so text isn't clipped */
+.chart-wrapper {
+    flex: 1;
+    min-width: 0;
+    padding-bottom: 60px;
+}
+
+.chart-wrapper svg,
+.chart-wrapper .rz-chart svg {
+    overflow: visible !important;
+}
 
 #blazor-error-ui {
     bottom: 0;

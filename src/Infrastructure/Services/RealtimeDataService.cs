@@ -21,19 +21,9 @@ public class RealtimeDataService : IRealtimeDataService
         _db = db;
     }
 
-    public async Task<RealtimeDataDto?> GetLatestAsync(CancellationToken ct = default)
+    public async Task<RealtimeDataDto?> GetFirstOrDefaultAsync(CancellationToken ct = default)
     {
         var entity = await _db.RealtimeData
-            .OrderByDescending(x => x.CreatedAt)
-            .FirstOrDefaultAsync(ct);
-        return entity == null ? null : MapToDto(entity);
-    }
-
-    public async Task<RealtimeDataDto?> GetPreviousAsync(CancellationToken ct = default)
-    {
-        var entity = await _db.RealtimeData
-            .OrderByDescending(x => x.CreatedAt)
-            .Skip(1)
             .FirstOrDefaultAsync(ct);
         return entity == null ? null : MapToDto(entity);
     }

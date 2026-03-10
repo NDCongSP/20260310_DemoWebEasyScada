@@ -1,30 +1,30 @@
 @page "/"
 @using Application.DTOs
 @using Application.Interfaces.RestEase
+@using UI.Models
 @inject IConfigApi ConfigApi
 @inject IRealtimeApi RealtimeApi
+@inject DialogService DialogService
 @implements IDisposable
 
-<PageTitle>Realtime nhiệt độ</PageTitle>
+<PageTitle>Realtime temperature</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="realtime-page-container">
-    <MudStack row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
-        <MudText Typo="Typo.h4">Nhiệt độ theo thời gian thực</MudText>
-        <MudChip T="string" Icon="@Icons.Material.Filled.Schedule" Color="Color.Primary" Size="Size.Medium">
-            Reload: @_reloadSeconds s
-        </MudChip>
-    </MudStack>
+<RadzenStack Gap="1rem" Style="width: 100%;">
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+        <RadzenText TextStyle="TextStyle.H4">Real-time temperature</RadzenText>
+        <RadzenBadge BadgeStyle="BadgeStyle.Primary" Text="@($"Reload: {_reloadSeconds} s")" />
+    </RadzenStack>
 
     @if (_config != null && _config.ReloadIntervalSeconds.HasValue)
     {
-        <MudAlert Severity="Severity.Info" Class="mb-4" Dense="true" Variant="Variant.Outlined">
-            Cập nhật mỗi <strong>@(_config.ReloadIntervalSeconds) giây</strong>. Lần đo mới nhất: <strong>@_lastMeasureTime</strong>
-        </MudAlert>
+        <RadzenAlert AlertStyle="AlertStyle.Info" ShowIcon="true" Variant="Variant.Outlined">
+            Updates every <strong>@(_config.ReloadIntervalSeconds) seconds</strong>. Measure time: <strong>@_lastMeasureTime</strong>
+        </RadzenAlert>
     }
 
     @if (_loading && _realtimeData == null)
     {
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+        <RadzenProgressBarCircular ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
     }
     else if (_publishedLocations?.Any() == true)
     {
@@ -32,48 +32,31 @@
             @foreach (var loc in _publishedLocations)
             {
                 var temp = GetTemperatureForLocation(loc.Id);
-                var trend = GetTrend(loc.Id);
-                <MudCard Elevation="4" Class="realtime-card">
-                    <MudCardHeader Class="pb-0">
-                        <CardHeaderContent>
-                            <MudText Typo="Typo.subtitle1" Class="font-weight-bold card-title">@loc.Name</MudText>
-                        </CardHeaderContent>
-                    </MudCardHeader>
-                    <MudCardContent Class="pt-2">
-                        <MudStack row="true" AlignItems="AlignItems.Center" Spacing="1">
-                            <MudText Typo="Typo.h3" Class="temperature-value">@(temp?.ToString("F1") ?? "—")</MudText>
-                            <MudText Typo="Typo.h6" Class="temperature-unit">°C</MudText>
-                            @if (trend > 0)
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Class="trend-icon trend-up" />
-                            }
-                            else if (trend < 0)
-                            {
-                                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Class="trend-icon trend-down" />
-                            }
-                            else if (temp != null)
-                            {
-                                <MudText Typo="Typo.h5" Class="trend-icon trend-neutral">—</MudText>
-                            }
-                        </MudStack>
-                    </MudCardContent>
-                </MudCard>
+                <RadzenCard class="realtime-card card-clickable" @onclick="() => OpenChart(loc)">
+                    <RadzenStack Gap="0.5rem">
+                        <RadzenText TextStyle="TextStyle.Subtitle1" Style="font-weight: bold;">@loc.Name</RadzenText>
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+                            <RadzenText TextStyle="TextStyle.H3" class="temperature-value">@(temp?.ToString("F1") ?? "—")</RadzenText>
+                            <RadzenText TextStyle="TextStyle.H6" class="temperature-unit">°C</RadzenText>
+                        </RadzenStack>
+                    </RadzenStack>
+                </RadzenCard>
             }
         </div>
     }
     else
     {
-        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">
-            Chưa có địa điểm nào được bật Publish. Vào <MudLink Href="/config" Color="Color.Primary">Cấu hình</MudLink> để thêm và bật Publish.
-        </MudAlert>
+        <RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Outlined">
+            No locations are published. Go to <RadzenLink Path="/config" Text="Settings" /> to add and publish.
+        </RadzenAlert>
     }
-</MudContainer>
+</RadzenStack>
 
 @code {
     private RevoConfigDto? _config;
     private RealtimeDataDto? _realtimeData;
-    private RealtimeDataDto? _previousRealtimeData;
     private List<LocationConfigItemDto>? _publishedLocations;
+    private readonly Dictionary<Guid, List<TemperatureChartPoint>> _temperatureHistory = new();
     private bool _loading = true;
     private int _reloadSeconds = 10;
     private string _lastMeasureTime = "—";
@@ -99,10 +82,26 @@
         _loading = true;
         try
         {
-            _realtimeData = await RealtimeApi.GetLatestAsync();
-            _previousRealtimeData = await RealtimeApi.GetPreviousAsync();
+            _realtimeData = await RealtimeApi.GetFirstOrDefaultAsync();
             if (_realtimeData?.CreatedAt != null)
                 _lastMeasureTime = _realtimeData.CreatedAt.Value.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy");
+
+            foreach (var loc in _publishedLocations ?? Enumerable.Empty<LocationConfigItemDto>())
+            {
+                var temp = _realtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == loc.Id)?.Temperature;
+                if (temp == null) continue;
+                if (!_temperatureHistory.ContainsKey(loc.Id))
+                    _temperatureHistory[loc.Id] = new List<TemperatureChartPoint>();
+                var list = _temperatureHistory[loc.Id];
+                var intervalSeconds = Math.Max(1, _reloadSeconds);
+                var time = list.Count == 0
+                    ? DateTime.UtcNow
+                    : list[list.Count - 1].Time.AddSeconds(intervalSeconds);
+                list.Add(new TemperatureChartPoint { Time = time, Value = temp.Value });
+                const int maxPoints = 20;
+                if (list.Count > maxPoints)
+                    list.RemoveRange(0, list.Count - maxPoints);
+            }
         }
         finally
         {
@@ -129,14 +128,17 @@
         return _realtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
     }
 
-    private int GetTrend(Guid locationId)
+    private async Task OpenChart(LocationConfigItemDto loc)
     {
-        var current = _realtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
-        var previous = _previousRealtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
-        if (current == null || previous == null) return 0;
-        if (current > previous) return 1;
-        if (current < previous) return -1;
-        return 0;
+        var points = _temperatureHistory.TryGetValue(loc.Id, out var list) ? new List<TemperatureChartPoint>(list) : new List<TemperatureChartPoint>();
+        var parameters = new Dictionary<string, object>
+        {
+            [nameof(TemperatureChartDialog.Title)] = loc.Name,
+            [nameof(TemperatureChartDialog.DataPoints)] = points,
+            [nameof(TemperatureChartDialog.LocationId)] = loc.Id,
+            [nameof(TemperatureChartDialog.GetDataForLocation)] = (Func<Guid, List<TemperatureChartPoint>>)(id => _temperatureHistory.TryGetValue(id, out var l) ? new List<TemperatureChartPoint>(l) : new List<TemperatureChartPoint>())
+        };
+        await DialogService.OpenAsync<TemperatureChartDialog>($"{loc.Name} — Temperature over time", parameters, new DialogOptions { Width = "90vw", Height = "100%", CloseDialogOnOverlayClick = true });
     }
 
     public void Dispose()

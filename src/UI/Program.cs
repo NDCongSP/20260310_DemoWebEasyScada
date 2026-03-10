@@ -1,14 +1,14 @@
 using Application.Interfaces.RestEase;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using MudBlazor;
-using MudBlazor.Services;
 using RestEase.HttpClientFactory;
+using Radzen;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddRadzenComponents();
 
 var apiBaseUrl = (builder.Configuration["ApiBaseUrl"] ?? "http://localhost:5089").TrimEnd('/') + "/";
 
@@ -16,8 +16,6 @@ builder.Services.AddHttpClient("DemoApi")
     .ConfigureHttpClient(c => c.BaseAddress = new Uri(apiBaseUrl))
     .UseWithRestEaseClient<IConfigApi>()
     .UseWithRestEaseClient<IRealtimeApi>();
-
-builder.Services.AddMudServices();
 
 var app = builder.Build();
 

@@ -1,23 +1,27 @@
 @inherits LayoutComponentBase
-<MudThemeProvider />
-<MudDialogProvider />
-<MudSnackbarProvider />
+@using Radzen.Blazor
 
-<MudLayout>
-    <MudAppBar Elevation="1" Class="mud-appbar-gradient">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="ToggleDrawer" />
-        <MudText Typo="Typo.h6" Class="ml-2">Nhiệt độ Realtime</MudText>
-    </MudAppBar>
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
-        <MudNavMenu>
-            <MudNavLink Href="/" Match="NavLinkMatch.All" Icon="@Icons.Material.Filled.Thermostat">Realtime</MudNavLink>
-            <MudNavLink Href="/config" Icon="@Icons.Material.Filled.Settings">Cấu hình</MudNavLink>
-        </MudNavMenu>
-    </MudDrawer>
-    <MudMainContent Class="pa-4">
-        @Body
-    </MudMainContent>
-</MudLayout>
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenSidebarToggle Click="ToggleDrawer" />
+        <span class="rz-header-title">Realtime temperature</span>
+    </RadzenHeader>
+    <RadzenSidebar @bind-Expanded="_drawerOpen">
+        <RadzenPanelMenu>
+            <RadzenPanelMenuItem Text="Realtime" Path="/" Icon="thermostat" Match="NavLinkMatch.All" />
+            <RadzenPanelMenuItem Text="Settings" Path="/config" Icon="settings" />
+        </RadzenPanelMenu>
+    </RadzenSidebar>
+    <RadzenBody>
+        <RadzenStack Gap="1rem" Style="padding: 1rem;">
+            @Body
+        </RadzenStack>
+    </RadzenBody>
+    <RadzenDialog />
+    <RadzenNotification />
+    <RadzenContextMenu />
+    <RadzenTooltip />
+</RadzenLayout>
 
 @code {
     private bool _drawerOpen = true;

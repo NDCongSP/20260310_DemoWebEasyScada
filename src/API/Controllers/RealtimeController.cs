@@ -15,17 +15,10 @@ public class RealtimeController : ControllerBase
         _realtimeService = realtimeService;
     }
 
-    [HttpGet("latest")]
-    public async Task<ActionResult<RealtimeDataDto?>> GetLatest(CancellationToken ct)
+    [HttpGet("first")]
+    public async Task<ActionResult<RealtimeDataDto?>> GetFirst(CancellationToken ct)
     {
-        var data = await _realtimeService.GetLatestAsync(ct);
-        return data == null ? NotFound() : Ok(data);
-    }
-
-    [HttpGet("previous")]
-    public async Task<ActionResult<RealtimeDataDto?>> GetPrevious(CancellationToken ct)
-    {
-        var data = await _realtimeService.GetPreviousAsync(ct);
+        var data = await _realtimeService.GetFirstOrDefaultAsync(ct);
         return data == null ? NotFound() : Ok(data);
     }
 }

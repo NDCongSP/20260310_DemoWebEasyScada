@@ -4,6 +4,8 @@ namespace Application.Interfaces;
 
 public interface IRealtimeDataService
 {
-    Task<RealtimeDataDto?> GetLatestAsync(CancellationToken ct = default);
-    Task<RealtimeDataDto?> GetPreviousAsync(CancellationToken ct = default);
+    /// <summary>
+    /// Lấy bản ghi first or default (theo CreatedAt tăng dần).
+    /// </summary>
+    Task<RealtimeDataDto?> GetFirstOrDefaultAsync(CancellationToken ct = default);
 }

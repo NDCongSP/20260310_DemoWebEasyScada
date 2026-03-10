@@ -1,0 +1,129 @@
+@using Radzen
+@using Radzen.Blazor
+@using UI.Models
+@inject DialogService DialogService
+@implements IDisposable
+
+@if (_points.Count > 0)
+{
+    <RadzenStack Gap="0.5rem">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Stretch" Style="gap: 8px;">
+            <RadzenText TextStyle="TextStyle.Caption" Style="writing-mode: vertical-rl; transform: rotate(-180deg); align-self: center; white-space: nowrap;">Temperature (°C)</RadzenText>
+            <RadzenChart Style="width: 100%;height: 500px">
+                <RadzenCategoryAxis>
+                    <RadzenAxisTitle Text="Time (timer interval)" />
+                    <RadzenTicks>
+                        <Template>
+                            <text class="rz-tick-text" style="text-anchor: start; transform: translate(@(context.X - 30)px, @(context.Y + 50)px) rotate(-45deg); font-size:small">@context.Value</text>
+                        </Template>
+                    </RadzenTicks>
+                </RadzenCategoryAxis>
+                <RadzenValueAxis />
+                <RadzenLineSeries Smooth="true" Data="@ChartData" CategoryProperty="Category" ValueProperty="Value" Title="°C">
+                    <RadzenMarkers Visible="true" MarkerType="MarkerType.Square" />
+                    <RadzenSeriesDataLabels Visible="true" />
+                </RadzenLineSeries>
+            </RadzenChart>
+        </RadzenStack>
+        @* <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" AlignItems="AlignItems.Center" Style="gap: 12px;">
+            <RadzenText TextStyle="TextStyle.Caption">Time</RadzenText>
+            <RadzenBadge BadgeStyle="BadgeStyle.Primary" Variant="Variant.Outlined" Text="°C — Temperature" />
+        </RadzenStack> *@
+    </RadzenStack>
+}
+else
+{
+    <RadzenText>No data yet. Waiting for more points.</RadzenText>
+}
+
+<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" Gap="0.5rem" Style="margin-top: 1rem;">
+    <RadzenButton Text="Close" ButtonStyle="ButtonStyle.Light" Click="Close" />
+</RadzenStack>
+
+@code {
+    [Parameter]
+    public string Title { get; set; } = "";
+
+    [Parameter]
+    public List<TemperatureChartPoint>? DataPoints { get; set; }
+
+    [Parameter]
+    public Guid LocationId { get; set; }
+
+    [Parameter]
+    public Func<Guid, List<TemperatureChartPoint>>? GetDataForLocation { get; set; }
+
+    private List<TemperatureChartPoint> _points = new();
+    private Timer? _refreshTimer;
+    private volatile bool _disposed;
+    private const int RefreshIntervalMs = 2000;
+
+    private IEnumerable<ChartDataItem> ChartData => _points.Select(p => new ChartDataItem
+    {
+        Category = p.Time.ToLocalTime().ToString("HH:mm:ss"),
+        Value = p.Value
+    });
+
+    protected override void OnParametersSet()
+    {
+        if (DataPoints != null)
+            _points = new List<TemperatureChartPoint>(DataPoints);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender && GetDataForLocation != null)
+        {
+            _refreshTimer = new Timer(_ =>
+            {
+                if (_disposed) return;
+                try
+                {
+                    _ = InvokeAsync(() =>
+                    {
+                        if (_disposed) return;
+                        try
+                        {
+                            var fresh = GetDataForLocation(LocationId);
+                            if (fresh.Count != _points.Count || (fresh.Count > 0 && (fresh[^1].Time != _points[^1].Time || Math.Abs(fresh[^1].Value - _points[^1].Value) > 0.001)))
+                            {
+                                _points = new List<TemperatureChartPoint>(fresh);
+                                StateHasChanged();
+                            }
+                        }
+                        catch (ObjectDisposedException) { }
+                        catch (InvalidOperationException) { }
+                        catch (Exception) { }
+                    });
+                }
+                catch (ObjectDisposedException) { }
+            }, null, RefreshIntervalMs, RefreshIntervalMs);
+        }
+    }
+
+    public void Dispose()
+    {
+        _disposed = true;
+        _refreshTimer?.Dispose();
+        _refreshTimer = null;
+    }
+
+    private void Close()
+    {
+        _disposed = true;
+        _refreshTimer?.Dispose();
+        _refreshTimer = null;
+        try
+        {
+            DialogService?.Close();
+        }
+        catch (ObjectDisposedException) { }
+        catch (InvalidOperationException) { }
+    }
+
+    private class ChartDataItem
+    {
+        public string Category { get; set; } = "";
+        public double Value { get; set; }
+    }
+}

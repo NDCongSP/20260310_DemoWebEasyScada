@@ -2,66 +2,85 @@
 @using Application.DTOs
 @using Application.Interfaces.RestEase
 @inject IConfigApi ConfigApi
-@inject ISnackbar Snackbar
-<PageTitle>Cấu hình</PageTitle>
+@inject NotificationService NotificationService
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
-    <MudText Typo="Typo.h4" Class="mb-4" GutterBottom="true">Cấu hình</MudText>
+<PageTitle>Settings</PageTitle>
+
+<RadzenStack Gap="1rem" Style="width: 100%;">
+    <RadzenText TextStyle="TextStyle.H4" Style="margin-bottom: 1rem;">Settings</RadzenText>
 
     @if (_loading)
     {
-        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+        <RadzenProgressBarCircular ShowValue="false" Mode="ProgressBarMode.Indeterminate" />
     }
     else if (_config != null)
     {
-        <MudPaper Class="pa-4 mb-4" Elevation="2" Outlined="true">
-            <MudText Typo="Typo.subtitle1" Class="mb-3">Thời gian reload (giây)</MudText>
-            <MudNumericField @bind-Value="_reloadSeconds" Min="5" Max="120" Variant="Variant.Outlined" Immediate="true" Style="max-width: 120px" />
-            <MudText Typo="Typo.caption" Class="mt-1">Trang Realtime sẽ tự cập nhật sau mỗi số giây này.</MudText>
-        </MudPaper>
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Subtitle1" Style="margin-bottom: 0.75rem;">Reload interval (seconds)</RadzenText>
+            <RadzenNumeric @bind-Value="_reloadSeconds" Min="5" Max="120" Style="max-width: 120px" />
+            <RadzenText TextStyle="TextStyle.Caption" Style="margin-top: 0.25rem;">The Realtime page will auto-update after this many seconds.</RadzenText>
+        </RadzenCard>
 
-        <MudPaper Class="pa-4 mb-4" Elevation="2" Outlined="true">
-            <MudText Typo="Typo.subtitle1" Class="mb-3">Địa điểm đo nhiệt độ</MudText>
-            <MudTable Items="@(_config.Locations ?? new List<LocationConfigItemDto>())" Dense="true" Hover="true" Breakpoint="Breakpoint.Sm" Class="mb-4" Striped="true">
-                <HeaderContent>
-                    <MudTh>Tên địa điểm</MudTh>
-                    <MudTh Style="width: 100px">Publish</MudTh>
-                    <MudTh Style="width: 80px">Thao tác</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Tên">@(context.Name)</MudTd>
-                    <MudTd DataLabel="Publish">
-                        <MudSwitch T="bool" Value="context.Publish" ValueChanged="v => { context.Publish = v; StateHasChanged(); }" Color="Color.Primary" />
-                    </MudTd>
-                    <MudTd>
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Color="Color.Error" Size="Size.Small" OnClick="@(() => RemoveLocation(context))" />
-                    </MudTd>
-                </RowTemplate>
-            </MudTable>
+        <RadzenCard>
+            <RadzenText TextStyle="TextStyle.Subtitle1" Style="margin-bottom: 0.75rem;">Temperature measurement locations</RadzenText>
+            <RadzenDataGrid Data="@(_config.Locations ?? new List<LocationConfigItemDto>())" TItem="LocationConfigItemDto" AllowFiltering="false" AllowPaging="false" AllowSorting="false" Style="margin-bottom: 1rem;">
+                <Columns>
+                    <RadzenDataGridColumn TItem="LocationConfigItemDto" Property="Name" Title="Location name" />
+                    <RadzenDataGridColumn TItem="LocationConfigItemDto" Property="Path" Title="Path" Width="220px">
+                        <Template Context="ctx">
+                            <RadzenTextBox @bind-Value="ctx.Path" Placeholder="e.g. /api/sensor/1" Style="width: 100%;" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="LocationConfigItemDto" Property="Publish" Title="Publish" Width="100px">
+                        <Template Context="ctx">
+                            <RadzenSwitch @bind-Value="ctx.Publish" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                    <RadzenDataGridColumn TItem="LocationConfigItemDto" Title="Actions" Width="80px" Sortable="false" Filterable="false">
+                        <Template Context="ctx">
+                            <RadzenButton Icon="delete" ButtonStyle="ButtonStyle.Danger" Size="ButtonSize.Small" Click="@(() => RemoveLocation(ctx))" />
+                        </Template>
+                    </RadzenDataGridColumn>
+                </Columns>
+            </RadzenDataGrid>
 
-            <MudStack row="true" Spacing="2" AlignItems="AlignItems.Center" Class="mb-2">
-                <MudTextField @bind-Value="_newLocationName" Label="Tên địa điểm mới" Variant="Variant.Outlined" Style="max-width: 280px" Placeholder="VD: Khu lò A" />
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddLocation" StartIcon="@Icons.Material.Filled.Add">Thêm</MudButton>
-            </MudStack>
-        </MudPaper>
+            <RadzenStack Gap="0.25rem" Style="margin-bottom: 0.5rem;">
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center">
+                    <RadzenStack Gap="0.15rem">
+                        <RadzenTextBox @bind-Value="_newLocationName"
+                                       @oninput="() => _nameError = false"
+                                       Placeholder="Location name *"
+                                       Style="@($"max-width: 200px; border-color: {(_nameError ? "var(--rz-danger)" : "")}")" />
+                        @if (_nameError)
+                        {
+                            <RadzenText Style="color: var(--rz-danger); font-size: 0.75rem;">Name is required</RadzenText>
+                        }
+                    </RadzenStack>
+                    <RadzenTextBox @bind-Value="_newLocationPath" Placeholder="Path (optional)" Style="max-width: 200px" />
+                    <RadzenButton Text="Add" ButtonStyle="ButtonStyle.Primary" Icon="add" Click="AddLocation" />
+                </RadzenStack>
+            </RadzenStack>
+        </RadzenCard>
 
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" OnClick="Save" StartIcon="@Icons.Material.Filled.Save" Class="mb-4">Lưu cấu hình</MudButton>
+        <RadzenButton Text="Save settings" ButtonStyle="ButtonStyle.Primary" Icon="save" Size="ButtonSize.Large" Click="Save" />
     }
     else
     {
-        <MudAlert Severity="Severity.Warning" Class="mb-4">Chưa có cấu hình. Tạo cấu hình mới.</MudAlert>
-        <MudPaper Class="pa-4 mb-4" Outlined="true">
-            <MudNumericField @bind-Value="_reloadSeconds" Label="Thời gian reload (giây)" Min="5" Max="120" Variant="Variant.Outlined" Class="mb-4" />
-            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CreateAndSave" StartIcon="@Icons.Material.Filled.Add">Tạo cấu hình mới</MudButton>
-        </MudPaper>
+        <RadzenAlert AlertStyle="AlertStyle.Warning">No settings yet. Create new settings.</RadzenAlert>
+        <RadzenCard>
+            <RadzenNumeric @bind-Value="_reloadSeconds" Label="Reload interval (seconds)" Min="5" Max="120" Style="margin-bottom: 1rem;" />
+            <RadzenButton Text="Create new settings" ButtonStyle="ButtonStyle.Primary" Icon="add" Click="CreateAndSave" />
+        </RadzenCard>
     }
-</MudContainer>
+</RadzenStack>
 
 @code {
     private RevoConfigDto? _config;
     private bool _loading = true;
     private int _reloadSeconds = 10;
+    private bool _nameError = false;
     private string _newLocationName = "";
+    private string _newLocationPath = "";
 
     protected override async Task OnInitializedAsync()
     {
@@ -87,16 +106,34 @@
 
     private void AddLocation()
     {
-        if (string.IsNullOrWhiteSpace(_newLocationName)) return;
+        if (string.IsNullOrWhiteSpace(_newLocationName))
+        {
+            _nameError = true;
+            return;
+        }
+        _nameError = false;
         _config ??= new RevoConfigDto { Locations = new List<LocationConfigItemDto>() };
-        _config.Locations ??= new List<LocationConfigItemDto>();
-        _config.Locations.Add(new LocationConfigItemDto { Id = Guid.NewGuid(), Name = _newLocationName.Trim(), Publish = true });
+        var list = new List<LocationConfigItemDto>(_config.Locations ?? new List<LocationConfigItemDto>())
+        {
+            new LocationConfigItemDto
+            {
+                Id = Guid.NewGuid(),
+                Name = _newLocationName.Trim(),
+                Path = _newLocationPath?.Trim() ?? "",
+                Publish = true
+            }
+        };
+        _config.Locations = list;
         _newLocationName = "";
+        _newLocationPath = "";
     }
 
     private void RemoveLocation(LocationConfigItemDto item)
     {
-        _config?.Locations?.Remove(item);
+        if (_config?.Locations == null) return;
+        var list = new List<LocationConfigItemDto>(_config.Locations);
+        list.Remove(item);
+        _config.Locations = list;
     }
 
     private async Task Save()
@@ -109,12 +146,12 @@
                 await ConfigApi.CreateAsync(_config);
             else
                 await ConfigApi.UpdateAsync(_config.Id, _config);
-            Snackbar.Add("Đã lưu cấu hình.", Severity.Success);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Settings saved." });
             await LoadAsync();
         }
         catch (Exception ex)
         {
-            Snackbar.Add("Lỗi: " + ex.Message, Severity.Error);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = ex.Message });
         }
     }
 
@@ -130,12 +167,12 @@
         try
         {
             await ConfigApi.CreateAsync(_config);
-            Snackbar.Add("Đã tạo cấu hình.", Severity.Success);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Success, Summary = "Settings created." });
             await LoadAsync();
         }
         catch (Exception ex)
         {
-            Snackbar.Add("Lỗi: " + ex.Message, Severity.Error);
+            NotificationService.Notify(new NotificationMessage { Severity = NotificationSeverity.Error, Summary = "Error", Detail = ex.Message });
         }
     }
 }

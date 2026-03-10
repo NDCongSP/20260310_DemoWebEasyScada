@@ -9,9 +9,6 @@ namespace Application.Interfaces.RestEase;
 [BasePath("api/Realtime")]
 public interface IRealtimeApi
 {
-    [Get("latest")]
-    Task<RealtimeDataDto?> GetLatestAsync(CancellationToken ct = default);
-
-    [Get("previous")]
-    Task<RealtimeDataDto?> GetPreviousAsync(CancellationToken ct = default);
+    [Get("first")]
+    Task<RealtimeDataDto?> GetFirstOrDefaultAsync(CancellationToken ct = default);
 }
