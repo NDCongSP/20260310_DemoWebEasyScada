@@ -7,4 +7,6 @@ public class TemperaturePoint
 {
     public Guid LocationId { get; set; }
     public double Temperature { get; set; }
+
+    public string Path { get; set; }= string.Empty;
 }

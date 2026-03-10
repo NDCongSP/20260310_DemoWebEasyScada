@@ -25,9 +25,9 @@ public static class DbInitializer
         var loc3 = Guid.NewGuid();
         var locations = new List<LocationConfigItem>
         {
-            new() { Id = loc1, Name = "Khu lò 1", Publish = true },
-            new() { Id = loc2, Name = "Khu lò 2", Publish = true },
-            new() { Id = loc3, Name = "Khu lò 3", Publish = false }
+            new() { Id = loc1, Name = "Oven 1", Publish = true ,Path = "Local Station/Channel1"},
+            new() { Id = loc2, Name = "Oven 2", Publish = true ,Path = "Local Station/Channel2"},
+            new() { Id = loc3, Name = "Oven 3", Publish = false ,Path = "Local Station/Channel3"}
         };
         var c000 = JsonSerializer.Serialize(locations, JsonOptions);
 
@@ -43,8 +43,8 @@ public static class DbInitializer
 
         var temps1 = new List<TemperaturePoint>
         {
-            new() { LocationId = loc1, Temperature = 245.5 },
-            new() { LocationId = loc2, Temperature = 252.0 }
+            new() { LocationId = loc1, Temperature = 245.5,Path = "Local Station/Channel1" },
+            new() { LocationId = loc2, Temperature = 252.0,Path = "Local Station/Channel2" }
         };
         var c00_1 = JsonSerializer.Serialize(temps1, JsonOptions);
         context.RealtimeData.Add(new RealtimeData
@@ -54,19 +54,7 @@ public static class DbInitializer
             CreatedAt = DateTime.UtcNow.AddMinutes(-2)
         });
 
-        var temps2 = new List<TemperaturePoint>
-        {
-            new() { LocationId = loc1, Temperature = 246.2 },
-            new() { LocationId = loc2, Temperature = 251.1 }
-        };
-        var c00_2 = JsonSerializer.Serialize(temps2, JsonOptions);
-        context.RealtimeData.Add(new RealtimeData
-        {
-            Id = Guid.NewGuid(),
-            C00 = c00_2,
-            CreatedAt = DateTime.UtcNow
-        });
-
+        
         await context.SaveChangesAsync();
     }
 }

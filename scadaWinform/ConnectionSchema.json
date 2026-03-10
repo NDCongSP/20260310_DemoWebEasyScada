@@ -1,0 +1,831 @@
+{
+  "ItemType": 0,
+  "ServerAddress": "192.168.1.100",
+  "Port": 8800,
+  "CommunicationMode": 0,
+  "RefreshRate": 100,
+  "CreatedDate": "2026-03-10T11:49:28.4479845+07:00",
+  "Username": null,
+  "Password": null,
+  "Childs": [
+    {
+      "ItemType": 1,
+      "Name": "Local Station",
+      "Path": "Local Station",
+      "Description": null,
+      "DisplayInfo": null,
+      "Error": null,
+      "ConnectionStatus": 1,
+      "Childs": [
+        {
+          "ItemType": 3,
+          "Name": "Channel1",
+          "Path": "Local Station/Channel1",
+          "Description": null,
+          "DisplayInfo": "ModbusTCP - 192.168.1.100:502",
+          "Error": null,
+          "ConnectionStatus": 0,
+          "Childs": [
+            {
+              "ItemType": 4,
+              "Name": "Device1",
+              "Path": "Local Station/Channel1/Device1",
+              "Description": null,
+              "DisplayInfo": "UnitId - 1",
+              "Error": null,
+              "ConnectionStatus": 0,
+              "Childs": [
+                {
+                  "ItemType": 6,
+                  "Name": "Tag1",
+                  "Path": "Local Station/Channel1/Device1/Tag1",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400001"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag2",
+                  "Path": "Local Station/Channel1/Device1/Tag2",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400002"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag3",
+                  "Path": "Local Station/Channel1/Device1/Tag3",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400003"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag4",
+                  "Path": "Local Station/Channel1/Device1/Tag4",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400004"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag5",
+                  "Path": "Local Station/Channel1/Device1/Tag5",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400005"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag6",
+                  "Path": "Local Station/Channel1/Device1/Tag6",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400006"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag7",
+                  "Path": "Local Station/Channel1/Device1/Tag7",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400007"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag8",
+                  "Path": "Local Station/Channel1/Device1/Tag8",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400008"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag9",
+                  "Path": "Local Station/Channel1/Device1/Tag9",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400009"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag10",
+                  "Path": "Local Station/Channel1/Device1/Tag10",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400010"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag11",
+                  "Path": "Local Station/Channel1/Device1/Tag11",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400011"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag12",
+                  "Path": "Local Station/Channel1/Device1/Tag12",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400012"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag13",
+                  "Path": "Local Station/Channel1/Device1/Tag13",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400013"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag14",
+                  "Path": "Local Station/Channel1/Device1/Tag14",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400014"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag15",
+                  "Path": "Local Station/Channel1/Device1/Tag15",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400015"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag16",
+                  "Path": "Local Station/Channel1/Device1/Tag16",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400016"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag17",
+                  "Path": "Local Station/Channel1/Device1/Tag17",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400017"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag18",
+                  "Path": "Local Station/Channel1/Device1/Tag18",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400018"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag19",
+                  "Path": "Local Station/Channel1/Device1/Tag19",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400019"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag20",
+                  "Path": "Local Station/Channel1/Device1/Tag20",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400020"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag21",
+                  "Path": "Local Station/Channel1/Device1/Tag21",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400021"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag22",
+                  "Path": "Local Station/Channel1/Device1/Tag22",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400022"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag23",
+                  "Path": "Local Station/Channel1/Device1/Tag23",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400023"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag24",
+                  "Path": "Local Station/Channel1/Device1/Tag24",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400024"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag25",
+                  "Path": "Local Station/Channel1/Device1/Tag25",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400025"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag26",
+                  "Path": "Local Station/Channel1/Device1/Tag26",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400026"
+                  }
+                }
+              ],
+              "Properties": {
+                "UnitId": "1",
+                "Timeout": "1000",
+                "TryReadWriteTimes": "3",
+                "ReadMode": "Block",
+                "InputContactReadBlockSettings": "[]",
+                "OutputCoilsReadBlockSettings": "[]",
+                "InputRegisterReadBlockSettings": "[]",
+                "HoldingRegisterReadBlockSettings": "[\r\n  {\r\n    \"AddressType\": 4,\r\n    \"Enabled\": true,\r\n    \"StartAddress\": \"400001\",\r\n    \"EndAddress\": \"400026\"\r\n  }\r\n]",
+                "MaxWritesCount": "10"
+              }
+            }
+          ],
+          "Properties": {
+            "IpAddress": "192.168.1.100",
+            "Port": "502",
+            "DelayBetweenPool": "5",
+            "ScanRate": "100"
+          }
+        },
+        {
+          "ItemType": 3,
+          "Name": "Channel2",
+          "Path": "Local Station/Channel2",
+          "Description": null,
+          "DisplayInfo": "ModbusTCP - 192.168.1.100:502",
+          "Error": null,
+          "ConnectionStatus": 0,
+          "Childs": [
+            {
+              "ItemType": 4,
+              "Name": "Device1",
+              "Path": "Local Station/Channel2/Device1",
+              "Description": null,
+              "DisplayInfo": "UnitId - 1",
+              "Error": null,
+              "ConnectionStatus": 0,
+              "Childs": [
+                {
+                  "ItemType": 6,
+                  "Name": "Tag1",
+                  "Path": "Local Station/Channel2/Device1/Tag1",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400001"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag2",
+                  "Path": "Local Station/Channel2/Device1/Tag2",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400002"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag3",
+                  "Path": "Local Station/Channel2/Device1/Tag3",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400003"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag4",
+                  "Path": "Local Station/Channel2/Device1/Tag4",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400004"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag5",
+                  "Path": "Local Station/Channel2/Device1/Tag5",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400005"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag6",
+                  "Path": "Local Station/Channel2/Device1/Tag6",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400006"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag7",
+                  "Path": "Local Station/Channel2/Device1/Tag7",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400007"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag8",
+                  "Path": "Local Station/Channel2/Device1/Tag8",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400008"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag9",
+                  "Path": "Local Station/Channel2/Device1/Tag9",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400009"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag10",
+                  "Path": "Local Station/Channel2/Device1/Tag10",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400010"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag11",
+                  "Path": "Local Station/Channel2/Device1/Tag11",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400011"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag12",
+                  "Path": "Local Station/Channel2/Device1/Tag12",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400012"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag13",
+                  "Path": "Local Station/Channel2/Device1/Tag13",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400013"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag14",
+                  "Path": "Local Station/Channel2/Device1/Tag14",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400014"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag15",
+                  "Path": "Local Station/Channel2/Device1/Tag15",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400015"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag16",
+                  "Path": "Local Station/Channel2/Device1/Tag16",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400016"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag17",
+                  "Path": "Local Station/Channel2/Device1/Tag17",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400017"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag18",
+                  "Path": "Local Station/Channel2/Device1/Tag18",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400018"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag19",
+                  "Path": "Local Station/Channel2/Device1/Tag19",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400019"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag20",
+                  "Path": "Local Station/Channel2/Device1/Tag20",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400020"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag21",
+                  "Path": "Local Station/Channel2/Device1/Tag21",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400021"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag22",
+                  "Path": "Local Station/Channel2/Device1/Tag22",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400022"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag23",
+                  "Path": "Local Station/Channel2/Device1/Tag23",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400023"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag24",
+                  "Path": "Local Station/Channel2/Device1/Tag24",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400024"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag25",
+                  "Path": "Local Station/Channel2/Device1/Tag25",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400025"
+                  }
+                },
+                {
+                  "ItemType": 6,
+                  "Name": "Tag26",
+                  "Path": "Local Station/Channel2/Device1/Tag26",
+                  "Description": null,
+                  "DisplayInfo": null,
+                  "Error": null,
+                  "ConnectionStatus": 0,
+                  "Childs": [],
+                  "Properties": {
+                    "DataType": "Word",
+                    "Address": "400026"
+                  }
+                }
+              ],
+              "Properties": {
+                "UnitId": "1",
+                "Timeout": "1000",
+                "TryReadWriteTimes": "3",
+                "ReadMode": "Block",
+                "InputContactReadBlockSettings": "[]",
+                "OutputCoilsReadBlockSettings": "[]",
+                "InputRegisterReadBlockSettings": "[]",
+                "HoldingRegisterReadBlockSettings": "[\r\n  {\r\n    \"AddressType\": 4,\r\n    \"Enabled\": true,\r\n    \"StartAddress\": \"400001\",\r\n    \"EndAddress\": \"400026\"\r\n  }\r\n]",
+                "MaxWritesCount": "10"
+              }
+            }
+          ],
+          "Properties": {
+            "IpAddress": "192.168.1.100",
+            "Port": "502",
+            "DelayBetweenPool": "5",
+            "ScanRate": "100"
+          }
+        }
+      ],
+      "Properties": {}
+    }
+  ],
+  "Properties": {}
+}
