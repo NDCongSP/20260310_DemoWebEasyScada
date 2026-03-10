@@ -1,0 +1,147 @@
+@page "/"
+@using Application.DTOs
+@using Application.Interfaces.RestEase
+@inject IConfigApi ConfigApi
+@inject IRealtimeApi RealtimeApi
+@implements IDisposable
+
+<PageTitle>Realtime nhiệt độ</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="realtime-page-container">
+    <MudStack row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Class="mb-4">
+        <MudText Typo="Typo.h4">Nhiệt độ theo thời gian thực</MudText>
+        <MudChip T="string" Icon="@Icons.Material.Filled.Schedule" Color="Color.Primary" Size="Size.Medium">
+            Reload: @_reloadSeconds s
+        </MudChip>
+    </MudStack>
+
+    @if (_config != null && _config.ReloadIntervalSeconds.HasValue)
+    {
+        <MudAlert Severity="Severity.Info" Class="mb-4" Dense="true" Variant="Variant.Outlined">
+            Cập nhật mỗi <strong>@(_config.ReloadIntervalSeconds) giây</strong>. Lần đo mới nhất: <strong>@_lastMeasureTime</strong>
+        </MudAlert>
+    }
+
+    @if (_loading && _realtimeData == null)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="mb-4" />
+    }
+    else if (_publishedLocations?.Any() == true)
+    {
+        <div class="realtime-cards-row">
+            @foreach (var loc in _publishedLocations)
+            {
+                var temp = GetTemperatureForLocation(loc.Id);
+                var trend = GetTrend(loc.Id);
+                <MudCard Elevation="4" Class="realtime-card">
+                    <MudCardHeader Class="pb-0">
+                        <CardHeaderContent>
+                            <MudText Typo="Typo.subtitle1" Class="font-weight-bold card-title">@loc.Name</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent Class="pt-2">
+                        <MudStack row="true" AlignItems="AlignItems.Center" Spacing="1">
+                            <MudText Typo="Typo.h3" Class="temperature-value">@(temp?.ToString("F1") ?? "—")</MudText>
+                            <MudText Typo="Typo.h6" Class="temperature-unit">°C</MudText>
+                            @if (trend > 0)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowUpward" Class="trend-icon trend-up" />
+                            }
+                            else if (trend < 0)
+                            {
+                                <MudIcon Icon="@Icons.Material.Filled.ArrowDownward" Class="trend-icon trend-down" />
+                            }
+                            else if (temp != null)
+                            {
+                                <MudText Typo="Typo.h5" Class="trend-icon trend-neutral">—</MudText>
+                            }
+                        </MudStack>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </div>
+    }
+    else
+    {
+        <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">
+            Chưa có địa điểm nào được bật Publish. Vào <MudLink Href="/config" Color="Color.Primary">Cấu hình</MudLink> để thêm và bật Publish.
+        </MudAlert>
+    }
+</MudContainer>
+
+@code {
+    private RevoConfigDto? _config;
+    private RealtimeDataDto? _realtimeData;
+    private RealtimeDataDto? _previousRealtimeData;
+    private List<LocationConfigItemDto>? _publishedLocations;
+    private bool _loading = true;
+    private int _reloadSeconds = 10;
+    private string _lastMeasureTime = "—";
+    private CancellationTokenSource? _timerCts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadConfigAsync();
+        await LoadRealtimeAsync();
+        _ = RunTimerLoopAsync();
+    }
+
+    private async Task LoadConfigAsync()
+    {
+        _config = await ConfigApi.GetActiveAsync();
+        _publishedLocations = _config?.Locations?.Where(x => x.Publish).ToList() ?? new List<LocationConfigItemDto>();
+        if (_config?.ReloadIntervalSeconds != null)
+            _reloadSeconds = _config.ReloadIntervalSeconds.Value;
+    }
+
+    private async Task LoadRealtimeAsync()
+    {
+        _loading = true;
+        try
+        {
+            _realtimeData = await RealtimeApi.GetLatestAsync();
+            _previousRealtimeData = await RealtimeApi.GetPreviousAsync();
+            if (_realtimeData?.CreatedAt != null)
+                _lastMeasureTime = _realtimeData.CreatedAt.Value.ToLocalTime().ToString("HH:mm:ss dd/MM/yyyy");
+        }
+        finally
+        {
+            _loading = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task RunTimerLoopAsync()
+    {
+        _timerCts = new CancellationTokenSource();
+        var token = _timerCts.Token;
+        while (!token.IsCancellationRequested)
+        {
+            await Task.Delay(Math.Max(5000, _reloadSeconds * 1000), token);
+            if (token.IsCancellationRequested) break;
+            await LoadConfigAsync();
+            await LoadRealtimeAsync();
+        }
+    }
+
+    private double? GetTemperatureForLocation(Guid locationId)
+    {
+        return _realtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
+    }
+
+    private int GetTrend(Guid locationId)
+    {
+        var current = _realtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
+        var previous = _previousRealtimeData?.Temperatures?.FirstOrDefault(t => t.LocationId == locationId)?.Temperature;
+        if (current == null || previous == null) return 0;
+        if (current > previous) return 1;
+        if (current < previous) return -1;
+        return 0;
+    }
+
+    public void Dispose()
+    {
+        _timerCts?.Cancel();
+        _timerCts?.Dispose();
+    }
+}

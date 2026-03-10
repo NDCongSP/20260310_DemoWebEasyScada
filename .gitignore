@@ -1,0 +1,44 @@
+# Byte-order mark and end-of-line encoding issues
+*.cmd text eol=crlf
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# NuGet Packages
+*.nupkg
+*.snupkg
+.nuget/packages/*
+!.nuget/packages/build/
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# macOS
+.DS_Store
+
+# Rider
+.idea/
+*.sln.iml
+
+# Cursor
+.cursor/
