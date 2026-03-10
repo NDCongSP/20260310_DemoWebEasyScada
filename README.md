@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Demo Blazor Realtime
 
 Project Blazor (MudBlazor) + .NET API Core, Clean Architecture. Code First với Entity Framework, 2 bảng Config và Realtime (nhiệt độ theo khu vực).
@@ -39,3 +40,6 @@ Project Blazor (MudBlazor) + .NET API Core, Clean Architecture. Code First với
 
 - **RevoConfigs**: Id, C000 (JSON danh sách địa điểm: id, name, publish), ReloadIntervalSeconds, Actived, CreatedAt.
 - **RealtimeData**: Id, C00 (JSON nhiệt độ theo locationId), CreatedAt. Trang Realtime lấy dòng mới nhất.
+=======
+# 20260310_DemoWebEasyScada
+>>>>>>> b37eada07cf5b27122b8f740b5b17c35d703220a
