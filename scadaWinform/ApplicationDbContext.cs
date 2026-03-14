@@ -4,7 +4,7 @@ namespace scadaWinform
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext() : base("name=DbConnection")
+        public ApplicationDbContext() : base("name=DefaultConnection")
         {
         }
 

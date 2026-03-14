@@ -39,8 +39,15 @@ namespace scadaWinform
                 var config = await dbContext.RevoConfigs.FirstOrDefaultAsync();
                 _locationConfigItems = JsonConvert.DeserializeObject<List<LocationConfigItem>>(config.C000);
 
-                var realTime = dbContext.RealtimeDatas.OrderByDescending(x => x.CreatedAt).FirstOrDefault();
-                _temperaturePoints = JsonConvert.DeserializeObject<List<TemperaturePoint>>(realTime.C00);
+                foreach (var item in _locationConfigItems)
+                {
+                    _temperaturePoints.Add(new TemperaturePoint()
+                    {
+                        Path = item.Path,
+                        LocationId = item.Id,
+                        Temperature = 0
+                    });
+                }
             }
 
             #region Khởi tạo easy drirver connector
@@ -106,16 +113,16 @@ namespace scadaWinform
 
             foreach (var item in _locationConfigItems)
             {
-                _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag1").QualityChanged += Tag1_QualityChanged;
-                _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag1").ValueChanged += Tag1_ValueChanged;
-                _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2").ValueChanged += Tag2_ValueChanged;
+                _easyDriverConnector.GetTag($"{item.Path}/Tag1").QualityChanged += Tag1_QualityChanged;
+                _easyDriverConnector.GetTag($"{item.Path}/Tag1").ValueChanged += Tag1_ValueChanged;
+                //_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2").ValueChanged += Tag2_ValueChanged;
 
-                Tag1_ValueChanged(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag1")
-                    , new TagValueChangedEventArgs(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag1")
-                    , "", _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag1").Value));
-                Tag2_ValueChanged(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2")
-                   , new TagValueChangedEventArgs(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2")
-                   , "", _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2").Value));
+                Tag1_ValueChanged(_easyDriverConnector.GetTag($"{item.Path}/Tag1")
+                    , new TagValueChangedEventArgs(_easyDriverConnector.GetTag($"{item.Path}/Tag1")
+                    , "", _easyDriverConnector.GetTag($"{item.Path}/Tag1").Value));
+                //Tag2_ValueChanged(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2")
+                //   , new TagValueChangedEventArgs(_easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2")
+                //   , "", _easyDriverConnector.GetTag($"{item.Path}/Device1/Tag2").Value));
             }
            
 
@@ -135,7 +142,7 @@ namespace scadaWinform
                     {
                         item.Temperature = Convert.ToDouble(e.NewValue);
                         //Debug.WriteLine($"Alarm description {item.OvenId}:{item.AlarmDescription}");
-                        return;
+                        break;
                     }
                 }
 
@@ -145,6 +152,7 @@ namespace scadaWinform
                     if (realTime != null)
                     {
                         realTime.C00 = JsonConvert.SerializeObject(_temperaturePoints);
+                        realTime.CreatedAt = DateTime.Now;
                         dbContext.Entry(realTime).State = EntityState.Modified;
                         dbContext.SaveChanges();
                     }
